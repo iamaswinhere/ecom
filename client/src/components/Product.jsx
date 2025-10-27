@@ -2,36 +2,42 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-// Basic styling for the card in dark mode
+// Card styling remains the same
 const cardStyle = {
-  backgroundColor: '#343a40', // Dark background for the card
-  color: 'white', // White text
-  marginBottom: '1rem', // Add some space below cards
-  border: '1px solid #454d55' // Subtle border
+  backgroundColor: '#343a40',
+  color: 'white',
+  marginBottom: '1rem',
+  border: '1px solid #454d55'
 };
 
 const linkStyle = {
   textDecoration: 'none',
-  color: 'white', // White link text
+  color: 'white',
 };
 
 const Product = ({ product }) => {
   return (
-    <Card style={cardStyle}>
+    // Add Bootstrap flexbox classes to the Card
+    <Card style={cardStyle} className="h-100 d-flex flex-column"> {/* <-- ADDED CLASSES */}
       <Link to={`/product/${product._id}`}>
-        {/* Make image responsive */}
-        <Card.Img src={product.imageUrl} variant="top" style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}/>
+        <Card.Img
+          src={product.imageUrl || '/images/sample.jpg'} // Added fallback image
+          variant="top"
+          style={{ aspectRatio: '1 / 1', objectFit: 'cover' }}
+        />
       </Link>
 
-      <Card.Body>
+      {/* Make Card.Body grow to fill available space */}
+      <Card.Body className="d-flex flex-column flex-grow-1"> {/* <-- ADDED CLASSES */}
         <Link to={`/product/${product._id}`} style={linkStyle}>
           <Card.Title as="div" className="product-title">
             <strong>{product.name}</strong>
           </Card.Title>
         </Link>
 
-        <Card.Text as="h5" className="my-2"> {/* Added margin */}
-          ${product.price}
+        {/* Push price to the bottom */}
+        <Card.Text as="h5" className="mt-auto pt-2"> {/* <-- ADDED CLASSES (mt-auto pushes down) */}
+          ${product.price ? product.price.toFixed(2) : '0.00'}
         </Card.Text>
       </Card.Body>
     </Card>

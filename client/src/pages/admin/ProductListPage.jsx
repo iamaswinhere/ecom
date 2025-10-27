@@ -24,16 +24,31 @@ const ProductListPage = () => {
   const createdProduct = products[products.length -1];
 
   useEffect(() => {
-    dispatch(resetProductState());
+    console.log('ProductListPage useEffect - userInfo:', userInfo); // Log userInfo
 
-    if (!userInfo || !userInfo.user.isAdmin) {
-      navigate('/login');
-    }
+    // Only proceed if userInfo is loaded
+    if (userInfo) {
+      console.log('ProductListPage useEffect - User is logged in.');
+      if (!userInfo.user.isAdmin) {
+        console.log('ProductListPage useEffect - User is NOT admin, redirecting to /login');
+        navigate('/login');
+      } else {
+        // If logged in AND admin
+        console.log('ProductListPage useEffect - User is ADMIN.');
+        dispatch(resetProductState());
 
-    if (successCreate) {
-      navigate(`/admin/product/${createdProduct._id}/edit`);
+        if (successCreate && createdProduct) {
+          console.log('ProductListPage useEffect - Product created, redirecting to edit.');
+          navigate(`/admin/product/${createdProduct._id}/edit`);
+        } else {
+          console.log('ProductListPage useEffect - Fetching products.');
+          dispatch(fetchProducts());
+        }
+      }
     } else {
-      dispatch(fetchProducts());
+      // If userInfo is null/undefined (not logged in)
+      console.log('ProductListPage useEffect - User NOT logged in, redirecting to /login');
+      navigate('/login');
     }
   }, [dispatch, navigate, userInfo, successCreate, createdProduct]);
 

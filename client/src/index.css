@@ -233,3 +233,60 @@ a:hover {
 .delay-2 { animation-delay: 0.2s; }
 .delay-3 { animation-delay: 0.3s; }
 .delay-4 { animation-delay: 0.4s; }
+
+.product-carousel-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding-bottom: 1rem; /* Add some space for scrollbar if needed */
+  /* Hide scrollbar visually (optional, works on WebKit browsers) */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.product-carousel {
+  display: flex; /* Arrange items horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping to next line */
+  gap: 1rem; /* Space between items */
+  padding: 0.5rem 0; /* Add a little vertical padding */
+}
+
+.product-carousel-item {
+  flex: 0 0 auto; /* Prevent items from shrinking/growing */
+  width: 75%; /* On extra-small screens, show about 1.3 cards */
+  max-width: 280px; /* Max width for larger screens */
+  transition: transform 0.2s ease; /* Smooth transition */
+}
+
+/* Optional: Slightly scale up on hover */
+.product-carousel-item:hover {
+    transform: scale(1.03);
+}
+
+
+/* Adjust width based on screen size using media queries */
+@media (min-width: 576px) { /* Small devices (sm) */
+  .product-carousel-item {
+    width: 45%;
+  }
+}
+
+@media (min-width: 768px) { /* Medium devices (md) */
+  .product-carousel-item {
+    width: 30%;
+  }
+}
+
+@media (min-width: 992px) { /* Large devices (lg) */
+  .product-carousel-item {
+    width: 23%; /* Show roughly 4 items */
+  }
+}
+
+@media (min-width: 1200px) { /* Extra large devices (xl) */
+  .product-carousel-item {
+    width: 18%; /* Show roughly 5 items */
+     max-width: 220px; /* Smaller max width on very large screens */
+  }
+}
