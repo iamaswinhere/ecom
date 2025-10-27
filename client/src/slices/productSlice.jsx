@@ -5,9 +5,13 @@ import axios from 'axios';
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (_, { rejectWithValue }) => {
+  async (keyword = '', { rejectWithValue }) => { // <-- Add keyword parameter
     try {
-      const { data } = await axios.get('/api/products');
+      // Choose the correct API endpoint
+      const url = keyword
+        ? `/api/products/search/${keyword}`
+        : '/api/products';
+      const { data } = await axios.get(url);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data);

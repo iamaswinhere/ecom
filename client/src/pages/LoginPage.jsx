@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux'; // <-- Import Redux hooks
+import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
-import { login } from '../slices/userSlice'; // <-- Import our login action
+import { login } from '../slices/userSlice';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -12,11 +12,9 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Get userLogin state from the Redux store
   const userLogin = useSelector((state) => state.userLogin);
   const { loading, error, userInfo } = userLogin;
 
-  // Redirect if already logged in
   useEffect(() => {
     if (userInfo) {
       navigate('/');
@@ -25,19 +23,17 @@ const LoginPage = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Dispatch the login action
     dispatch(login({ email, password }));
   };
 
   return (
     <FormContainer>
       <h1>Sign In</h1>
-      {/* Show error message if login fails */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      {/* Show a simple loading text */}
       {loading && <p>Loading...</p>}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email" className='my-2'>
+        {/* --- ADD THIS EMAIL FIELD BACK --- */}
+        <Form.Group controlId="email" className="my-2">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type="email"
@@ -46,8 +42,9 @@ const LoginPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
+        {/* ---------------------------------- */}
 
-        <Form.Group controlId="password">
+        <Form.Group controlId="password" className="my-2">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -56,6 +53,12 @@ const LoginPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
+
+        <div className="mt-2">
+          <Link to="/forgot-password" style={{ color: '#adb5bd', fontSize: '0.9em' }}>
+            Forgot Password?
+          </Link>
+        </div>
 
         <Button type="submit" variant="primary" className="mt-3">
           Sign In
